@@ -1,0 +1,7 @@
+---
+# vars file for mysql
+
+db_name: coba1
+db_user: user1
+db_password: supersecret
+# db_password: "{{ (lookup('file', 'secret.yml') | from_yaml).db_password | default('') }}"

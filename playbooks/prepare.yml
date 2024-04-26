@@ -1,6 +1,8 @@
 --- 
 - name: Set up webserver
   hosts: all
+  vars_files:
+    - ../env/vars.yml 
   become: true
   roles:
     - ../roles/nginx-prepare
