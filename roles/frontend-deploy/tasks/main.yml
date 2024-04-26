@@ -15,12 +15,12 @@
   notify: Restart nginx
 
 - name: Curl result
-uri:
-  url: "http://localhost:3000"
-  method: GET
-  return_content: yes
-register: result
+  uri:
+    url: "http://localhost:3000"
+    method: GET
+    return_content: yes
+  register: result
 
 - name: Display response
-debug:
-  var: result.content
+  debug:
+    var: result.content
