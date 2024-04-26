@@ -1,0 +1,6 @@
+--- 
+- name: Set up webserver
+  hosts: all
+  become: true
+  roles:
+    - ../roles/nginx-prepare
