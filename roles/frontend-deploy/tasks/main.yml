@@ -1,2 +1,26 @@
 ---
 # tasks file for frontend-deploy
+- name: Copy fe template
+  become: true
+  copy:
+    src: ../roles/frontend-deploy/templates/fe-template.j2
+    dest: /etc/nginx/sites-available/frontend
+
+- name: Link to site-enabled
+  file:
+    src: /etc/nginx/sites-available/frontend
+    dest: /etc/nginx/sites-enabled/frontend
+    state: link
+  become: true
+  notify: Restart nginx
+
+- name: Curl result
+uri:
+  url: "http://localhost:3000"
+  method: GET
+  return_content: yes
+register: result
+
+- name: Display response
+debug:
+  var: result.content
