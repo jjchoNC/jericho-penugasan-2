@@ -1,2 +1,125 @@
 ---
-# tasks file for backend-build
+# tasks file for backend
+
+- name: Add PHP repo
+  become: true
+  apt_repository:
+    repo: ppa:ondrej/php
+    state: present
+
+- name: Update
+  become: true
+  apt:
+    update_cache: yes
+
+- name: Install PHP and related packages
+  become: true
+  apt:
+    name:
+      - php8.1-common
+      - php8.1-cli
+      - php8.1-mbstring
+      - php8.1-xml 
+      - unzip
+      - php8.1-curl
+      - php8.1-mysql
+      - php8.1-fpm
+      - php8.1-intl
+    state: present
+    update_cache: yes
+
+- name: Add safe directory for Git
+  community.general.git_config:
+    name: safe.directory
+    value: /var/www/be-todo
+    add_mode: add
+    scope: global
+
+- name: Clone Repo BE
+  git:
+    repo: https://github.com/elshiraphine/be-todo.git
+    dest: /var/www/be-todo
+    version: master
+    force: yes
+
+- name: Change permission
+  file:
+    path: /var/www/be-todo
+    mode: '0775'
+    recurse: yes
+  become: true
+
+- name: Change permission 2
+  file:
+    path: /usr/local/bin
+    mode: '0777'
+    recurse: yes
+  become: true
+
+- name: Change ownership
+  file:
+    path: /var/www/be-todo
+    owner: www-data
+    group: www-data
+    recurse: yes
+  become: true
+
+# - name: Download Composer setup script
+#   command: "php -r \"copy('https://getcomposer.org/installer', 'composer-setup.php');\""
+#   args:
+#     executable: /bin/bash
+
+- name: Install Composer
+  apt:
+    name: composer
+    state: present
+    update_cache: yes
+
+# - name: Remove Composer setup script
+#   command: "php -r \"unlink('composer-setup.php');\""
+#   args:
+#     executable: /bin/bash
+
+- name: Install Composer Dependencies as root
+  community.general.composer:
+    command: install
+    working_dir: /var/www/be-todo
+    arguments: "--no-plugins --no-scripts"
+  become: true
+  become_user: root
+  environment:
+      COMPOSER_ALLOW_SUPERUSER: "1"
+
+- name: Update Composer Dependencies as root
+  community.general.composer:
+    command: update
+    working_dir: /var/www/be-todo
+    arguments: "--no-plugins --no-scripts"
+  become: true
+  become_user: root
+  environment:
+      COMPOSER_ALLOW_SUPERUSER: "1"
+
+- name: Copy env
+  become: true
+  copy:
+    src: templates/env-template
+    dest: /var/www/be-todo/.env
+
+- name: Configure Laravel database
+  template:
+    src: templates/env-template
+    dest: /var/www/be-todo/.env
+  vars:
+    db_name: 'coba1'
+    db_user: 'user1'
+    db_password: supersecret
+
+- name: Run composer dump-autoload
+  community.general.composer:
+    command: dump-autoload
+    working_dir: /var/www/be-todo
+  become: true
+  become_user: root
+  environment:
+      COMPOSER_ALLOW_SUPERUSER: "1"

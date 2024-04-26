@@ -1,0 +1,6 @@
+---
+- name: Build
+  hosts: all
+  become: true
+  roles:
+    - ../roles/backend-build
