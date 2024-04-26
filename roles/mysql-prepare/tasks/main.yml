@@ -1,2 +1,32 @@
 ---
-# tasks file for mysql-prepare
+# tasks file for mysql
+
+- name: Install MySQL
+  apt:
+    name: "{{ item }}"
+    state: present
+  loop:
+    - mysql-server
+    - mysql-client
+    - python3-mysqldb
+
+- name: Create DB User
+  community.mysql.mysql_db:
+    name: '{{ db_name }}'
+    state: present
+
+- name: Config user
+  community.mysql.mysql_user:
+    name: '{{ db_user }}'
+    password: '{{ db_password }}'
+    priv: '{{ db_name }}.*:ALL'
+    state: present
+    column_case_sensitive: false
+
+- name: Enable remote login to mysql
+  lineinfile:
+    path: /etc/mysql/mysql.conf.d/mysqld.cnf
+    regexp: '^bind-address'
+    line: 'bind-address = 0.0.0.0'
+    backup: true
+  notify: Restart mysql

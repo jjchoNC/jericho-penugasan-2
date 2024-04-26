@@ -4,3 +4,4 @@
   become: true
   roles:
     - ../roles/nginx-prepare
+    - ../roles/mysql-prepare
