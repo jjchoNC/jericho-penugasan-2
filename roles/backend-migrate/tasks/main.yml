@@ -1,2 +1,17 @@
 ---
 # tasks file for backend-migrate
+- name: Generate App Key
+  shell: |
+      cd /var/www/be-todo
+      php artisan key:generate
+  become: yes
+
+- name: Generate App Key 2
+  command:
+    cmd: "php artisan migrate"
+    chdir: "/var/www/be-todo"
+
+- name: Generate JWT Secret
+  command:
+    cmd: "php artisan jwt:secret"
+    chdir: "/var/www/be-todo"

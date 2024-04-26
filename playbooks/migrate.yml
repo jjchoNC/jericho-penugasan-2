@@ -1,0 +1,6 @@
+---
+- name: Migrate
+  hosts: all
+  become: true
+  roles:
+    - ../roles/backend-migrate
