@@ -1,2 +1,81 @@
 ---
 # tasks file for frontend-build
+
+- name: Install NVM
+  shell: "curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.1/install.sh | bash"
+  args:
+    executable: /bin/bash
+
+- name: Source .bashrc
+  shell: "source ~/.bashrc"
+  args:
+    executable: /bin/bash
+
+- name: Add Yarn repository key
+  apt_key:
+    url: https://dl.yarnpkg.com/debian/pubkey.gpg
+    state: present
+
+- name: Add Yarn repository
+  apt_repository:
+    repo: deb https://dl.yarnpkg.com/debian/ stable main
+    state: present
+
+- name: Update apt cache
+  apt:
+    update_cache: yes
+
+- name: Install Yarn
+  apt:
+    name: yarn
+    state: present
+    update_cache: yes
+
+- name: Clone Repo FE
+  git:
+    repo: https://github.com/elshiraphine/fe-todo.git
+    dest: /var/www/fe-todo
+    version: main
+    force: yes
+
+- name: Install Node
+  become: yes
+  become_user: root
+  shell: "source /root/.nvm/nvm.sh && nvm install 18" 
+  args:
+    executable: /bin/bash
+
+- name: Alias default
+  become: yes
+  become_user: root
+  shell: "source /root/.nvm/nvm.sh && nvm alias default 18" 
+  args:
+    executable: /bin/bash
+
+- name: Install npm
+  apt:
+    name: npm
+    state: present
+
+- name: Install pm2
+  npm:
+    name: pm2
+    global: yes
+
+- name: Yarn install
+  shell: "yarn install --ignore-engines"
+  args:
+    chdir: /var/www/fe-todo
+  become: yes
+
+- name: Yarn build
+  shell: "yarn build"
+  args:
+    chdir: /var/www/fe-todo
+  become: yes
+
+- name: Start pm2
+  shell: "pm2 start --name fe-todo \"yarn start\""
+  become: yes
+  args:
+    chdir: /var/www/fe-todo
