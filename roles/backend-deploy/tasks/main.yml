@@ -21,7 +21,7 @@
 
 - name: Curl result
   uri:
-    url: "http://localhost:9000"
+    url: "http://localhost:8000"
     method: GET
     return_content: yes
   register: result
