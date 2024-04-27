@@ -14,6 +14,12 @@
   become: true
   notify: Restart nginx
 
+- name: start php-fpm
+  shell: "./php8.1-fpm start"
+  become: yes
+  args:
+    chdir: /etc/init.d/
+
 # - name: Run PHP Artisan Serve
 #   command:
 #     cmd: "nohup php artisan serve --port=9000 &"

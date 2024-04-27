@@ -10,6 +10,12 @@
     - mysql-client
     - python3-mysqldb
 
+- name: Start MySQL
+  service:
+    name: mysql
+    state: started
+    enabled: true
+
 - name: Create DB User
   community.mysql.mysql_db:
     name: '{{ db_name }}'
