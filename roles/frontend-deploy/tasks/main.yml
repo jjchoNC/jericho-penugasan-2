@@ -5,6 +5,7 @@
   copy:
     src: ../roles/frontend-deploy/templates/fe-template.j2
     dest: /etc/nginx/sites-available/frontend
+  notify: Restart nginx
 
 - name: Link to site-enabled
   file:

@@ -39,11 +39,11 @@
     path: /etc/nginx/sites-enabled/default
     state: absent
 
-- name: Copy nginx template
-  template:
-    src: nginx-template.j2
-    dest: /etc/nginx/sites-available/frontend
-  notify: Restart nginx
+# - name: Copy nginx template
+#   template:
+#     src: nginx-template.j2
+#     dest: /etc/nginx/sites-available/frontend
+#   notify: Restart nginx
 
 # - name: Enable nginx using symlink
 #   file:
