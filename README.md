@@ -37,3 +37,13 @@ Semua roles diatas akan dijalankan pada playbooks sesuai dengan suffix masing-ma
 ```bash
 ansible-playbook main.yml
 ```
+## **Screenshot**
+
+![image](https://github.com/jjchoNC/ajk-jericho-penugasan2/assets/115205053/8c015758-86ab-4f82-90f4-b726b2e7505f)
+![image](https://github.com/jjchoNC/ajk-jericho-penugasan2/assets/115205053/6401c105-899b-4e8c-a4c0-b36404ecc15f)
+![image](https://github.com/jjchoNC/ajk-jericho-penugasan2/assets/115205053/6bc3ca5e-9156-4e56-ba24-8990e13972e9)
+![image](https://github.com/jjchoNC/ajk-jericho-penugasan2/assets/115205053/6ebfe0f2-4fe3-4525-a255-75110661ea78)
+![image](https://github.com/jjchoNC/ajk-jericho-penugasan2/assets/115205053/9c3a6582-c780-4024-b1c9-9b385ca642e2)
+
+
+
